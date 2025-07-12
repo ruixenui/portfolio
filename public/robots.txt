@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://ruixen.com
+
+# Sitemaps
+Sitemap: https://ruixen.com/sitemap.xml

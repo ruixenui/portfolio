@@ -1,0 +1,29 @@
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import remarkGfm from 'remark-gfm';
+import rehypePrettyCode from 'rehype-pretty-code';
+
+// MDX components to enhance the blog post
+const components = {
+  // Add custom components here if needed
+};
+
+export function MdxContent({ content }: { content: string }) {
+  return (
+    <MDXRemote 
+      source={content} 
+      components={components}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+          rehypePlugins: [
+            rehypeSlug,
+            [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+            [rehypePrettyCode, { theme: 'github-dark' }]
+          ],
+        },
+      }}
+    />
+  );
+}
