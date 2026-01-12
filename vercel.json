@@ -1,7 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "name": "Ruixen UI – Portfolio Template",
-  "description": "A production-ready portfolio template with modern UI and smooth animations.",
   "framework": "nextjs",
   "buildCommand": "next build",
   "outputDirectory": ".next",
