@@ -18,12 +18,41 @@ import { InteractiveSkills } from "@/components/interactive-skills";
 import { WorkTimeline } from "@/components/work-timeline";
 import { HyperText } from "@/components/magicui/hyper-text";
 
+// Scroll animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+  }
+};
+
 // Name animation overlay component
 const NameAnimation = () => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // Prevent page scrolling during animation
     if (visible) {
       document.body.style.overflow = "hidden";
     } else {
@@ -32,7 +61,7 @@ const NameAnimation = () => {
 
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 2200); // Animation stays for 2.2 seconds (faster than before)
+    }, 2200);
 
     return () => {
       clearTimeout(timer);
@@ -49,7 +78,7 @@ const NameAnimation = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }} // Faster fade in/out
+          transition={{ duration: 0.5 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-white"
         >
           <div className="relative">
@@ -57,7 +86,7 @@ const NameAnimation = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.05 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }} // Faster background animation
+              transition={{ duration: 0.4 }}
               className="absolute inset-0 -z-10"
               style={{
                 backgroundImage:
@@ -66,14 +95,13 @@ const NameAnimation = () => {
               }}
             />
 
-            {/* Name with HyperText animation */}
             <div className="relative flex flex-wrap justify-center gap-x-4 text-center text-4xl font-bold sm:text-6xl lg:text-9xl">
               {nameWords.map((word, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1 * index, duration: 0.5 }} // Faster animation with shorter delay
+                  transition={{ delay: 0.1 * index, duration: 0.5 }}
                   className="overflow-hidden"
                 >
                   <HyperText className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-4xl font-bold text-transparent sm:text-6xl lg:text-9xl">
@@ -83,12 +111,11 @@ const NameAnimation = () => {
               ))}
             </div>
 
-            {/* About text with HyperText */}
             <motion.div
               className="text-center md:mt-10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }} // Faster appearance of about text
+              transition={{ delay: 0.6 }}
             >
               <HyperText className="text-sm tracking-wide text-gray-600">
                 {RESUME_DATA.about}
@@ -122,7 +149,6 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [animationComplete, setAnimationComplete] = useState(false);
 
-  // Command menu links
   const commandLinks = [
     {
       url: RESUME_DATA.personalWebsiteUrl,
@@ -139,7 +165,6 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    // Set animation complete after 4 seconds (slightly longer than the animation duration)
     const timer = setTimeout(() => {
       setAnimationComplete(true);
     }, 2000);
@@ -147,27 +172,10 @@ export default function Page() {
     return () => clearTimeout(timer);
   }, []);
 
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
-
   return (
     <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 md:p-16 print:p-12">
-      {/* Add the name animation component */}
       <NameAnimation />
 
-      {/* Only show content after animation completes */}
       <AnimatePresence>
         {animationComplete && (
           <motion.div
@@ -176,14 +184,17 @@ export default function Page() {
             transition={{ duration: 0.8 }}
           >
             <HoverNavbar links={commandLinks} />
-            <motion.section
+            <section
               id="top"
               className="mx-auto w-full max-w-4xl space-y-8 bg-white print:space-y-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
             >
-              <div className="flex items-center gap-6">
+              {/* Hero Section */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                className="flex items-center gap-6"
+              >
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -257,78 +268,162 @@ export default function Page() {
                     ) : null}
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              <Section id="about">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-medium">About</h2>
-                </div>
-                <p className="text-pretty text-sm text-muted-foreground">
-                  {RESUME_DATA.summary}
-                </p>
-              </Section>
-
-              <Section id="work" className="scroll-mt-16">
-                <h2 className="text-xl font-medium">Work Experience</h2>
-                <WorkTimeline experiences={RESUME_DATA.work} />
-              </Section>
-
-              <Section id="skills" className="scroll-mt-16">
-                <h2 className="text-xl font-medium">Skills</h2>
-                <div className="mt-5">
-                  <InteractiveSkills skills={RESUME_DATA.skills} />
-                </div>
-              </Section>
-
-              <Section
-                id="projects"
-                className="print-force-new-page scroll-mt-16"
+              {/* About Section */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInUp}
               >
-                <h2 className="text-xl font-medium">Projects</h2>
-                <div className="-mx-3 mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2">
-                  {RESUME_DATA.projects.map((project, index) => (
-                    <motion.div
-                      key={project.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <ProjectCard
-                        title={project.title}
-                        description={project.description}
-                        tags={project.techStack}
-                        link={"link" in project ? project.link.href : undefined}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </Section>
-              <Section id="education" className="scroll-mt-16">
-                <h2 className="text-xl font-medium">Education</h2>
-                <div className="mt-4 space-y-4">
-                  {RESUME_DATA.education.map((education) => (
-                    <Card
-                      key={education.school}
-                      className="overflow-hidden border border-muted p-4 transition-all hover:shadow-sm"
-                    >
-                      <CardHeader>
-                        <div className="flex items-center justify-between gap-x-2 text-base">
-                          <h3 className="font-semibold leading-none">
-                            {education.school}
-                          </h3>
-                          <div className="text-sm tabular-nums text-gray-500">
-                            {education.start} - {education.end}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="mt-2">
-                        {education.degree}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </Section>
-            </motion.section>
+                <Section id="about">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-medium">About</h2>
+                  </div>
+                  <p className="text-pretty text-sm text-muted-foreground">
+                    {RESUME_DATA.summary}
+                  </p>
+                </Section>
+              </motion.div>
+
+              {/* Work Experience Section */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInUp}
+              >
+                <Section id="work" className="scroll-mt-16">
+                  <h2 className="text-xl font-medium">Work Experience</h2>
+                  <WorkTimeline experiences={RESUME_DATA.work} />
+                </Section>
+              </motion.div>
+
+              {/* Skills Section */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInUp}
+              >
+                <Section id="skills" className="scroll-mt-16">
+                  <h2 className="text-xl font-medium">Skills</h2>
+                  <div className="mt-5">
+                    <InteractiveSkills skills={RESUME_DATA.skills} />
+                  </div>
+                </Section>
+              </motion.div>
+
+              {/* Projects Section */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInUp}
+              >
+                <Section
+                  id="projects"
+                  className="print-force-new-page scroll-mt-16"
+                >
+                  <h2 className="text-xl font-medium">Projects</h2>
+                  <motion.div
+                    className="-mx-3 mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-2"
+                    variants={staggerContainer}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                  >
+                    {RESUME_DATA.projects.map((project) => (
+                      <motion.div
+                        key={project.title}
+                        variants={staggerItem}
+                      >
+                        <ProjectCard
+                          title={project.title}
+                          description={project.description}
+                          tags={project.techStack}
+                          link={"link" in project ? project.link.href : undefined}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </Section>
+              </motion.div>
+
+              {/* Education Section */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInUp}
+              >
+                <Section id="education" className="scroll-mt-16">
+                  <h2 className="text-xl font-medium">Education</h2>
+                  <motion.div
+                    className="mt-4 space-y-4"
+                    variants={staggerContainer}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                  >
+                    {RESUME_DATA.education.map((education) => (
+                      <motion.div key={education.school} variants={staggerItem}>
+                        <Card className="overflow-hidden border border-muted p-4 transition-all hover:shadow-sm">
+                          <CardHeader>
+                            <div className="flex items-center justify-between gap-x-2 text-base">
+                              <h3 className="font-semibold leading-none">
+                                {education.school}
+                              </h3>
+                              <div className="text-sm tabular-nums text-gray-500">
+                                {education.start} - {education.end}
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="mt-2">
+                            {education.degree}
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </Section>
+              </motion.div>
+
+              {/* Extra Curricular Section */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInUp}
+              >
+                <Section id="extracurricular" className="scroll-mt-16">
+                  <h2 className="text-xl font-medium">Extra Curricular</h2>
+                  <motion.div
+                    className="mt-4 space-y-4"
+                    variants={staggerContainer}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                  >
+                    {RESUME_DATA.extraCurricular.map((activity) => (
+                      <motion.div key={activity.title} variants={staggerItem}>
+                        <Card className="overflow-hidden border border-muted p-4 transition-all hover:shadow-sm">
+                          <CardHeader>
+                            <h3 className="font-semibold leading-none">
+                              {activity.title}
+                            </h3>
+                          </CardHeader>
+                          <CardContent className="mt-2 text-sm text-muted-foreground">
+                            {activity.description}
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </Section>
+              </motion.div>
+            </section>
           </motion.div>
         )}
       </AnimatePresence>
