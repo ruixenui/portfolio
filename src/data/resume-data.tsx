@@ -8,7 +8,7 @@ export const RESUME_DATA = {
   summary:
     "Passionate full stack developer with 5+ years of expertise in building modern web applications and scalable cloud solutions. Experienced in leading cross-functional teams, architecting microservices, and delivering high-impact products used by millions. Dedicated to writing clean, maintainable code and creating exceptional user experiences. Strong advocate for best practices, code quality, and continuous learning.",
   avatarUrl: "/dp.jpg",
-  personalWebsiteUrl: "https://ruixen.com",
+  personalWebsiteUrl: "https://portfolio-mocha-three-0caesswhna.vercel.app",
   resumeUrl: "https://ruixen.com",
   contact: {
     email: "hello@ruixen.com",

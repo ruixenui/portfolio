@@ -1,117 +1,136 @@
-
 # Ruixen Portfolio
 
-This is the official personal portfolio project for Ruixen, built using **Next.js** and **Tailwind CSS**. It is optimized for performance, accessibility, and search engine visibility with the integration of **next-sitemap** for automatic sitemap and robots.txt generation.
+A production-ready portfolio template built with **Next.js**, **Tailwind CSS**, and **Framer Motion**. Features smooth scroll animations, modern UI, and optimized for performance.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ruixenui/portfolio-template)
+
+**Live Demo:** [https://portfolio-mocha-three-0caesswhna.vercel.app](https://portfolio-mocha-three-0caesswhna.vercel.app)
 
 ## Features
 
-- Built with **Next.js** and **TypeScript**
+- Built with **Next.js 14** and **TypeScript**
+- Smooth scroll animations with **Framer Motion**
 - Responsive UI styled with **Tailwind CSS**
-- **SEO-friendly** structure with sitemap and robots.txt
-- Simple and modular codebase for easy updates
-- Ready for deployment on **Vercel** or other platforms
+- Interactive skills section with filtering
+- Timeline-based work experience
+- **SEO-friendly** with sitemap and robots.txt
+- Dark/Light mode ready
+- One-click Vercel deployment
+
+## Quick Start
+
+### Deploy on Vercel (Recommended)
+
+Click the button below to deploy your own copy:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ruixenui/portfolio-template)
+
+### Local Development
+
+```bash
+# Clone the repository
+git clone https://github.com/ruixenui/portfolio-template.git
+
+# Navigate to the project
+cd portfolio-template
+
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Project Structure
 
 ```
-├── public/                    # Static assets
+├── public/                    # Static assets (images, resume)
 ├── src/
+│   ├── app/                   # Next.js App Router pages
 │   ├── components/            # Reusable UI components
-│   ├── pages/                 # Next.js route-based pages
-│   └── data/                  # Static data (e.g., resume, projects)
+│   │   ├── ui/               # Base UI components
+│   │   ├── magicui/          # Animation components
+│   │   └── ruixen/           # Custom components
+│   ├── data/                  # Portfolio data (resume-data.tsx)
+│   └── lib/                   # Utility functions
 ├── next-sitemap.config.js     # Sitemap configuration
-├── next.config.js             # Next.js configuration
-├── package.json
-└── README.md
+├── vercel.json                # Vercel deployment config
+└── package.json
 ```
 
-## Sitemap and SEO Setup
+## Customization
 
-This project uses **next-sitemap** to generate a `sitemap.xml` and `robots.txt` file, which help search engines crawl your site effectively.
+### Update Your Information
 
-### Installation
+Edit `src/data/resume-data.tsx` to update:
 
-1. Install the package:
+- Name and title
+- Avatar image
+- About/Summary
+- Work experience
+- Education
+- Skills
+- Projects
+- Extra-curricular activities
+- Social links
 
-   ```bash
-   npm install next-sitemap
-   ```
+### Add Your Avatar
+
+Place your profile image in the `public/` folder and update `avatarUrl` in `resume-data.tsx`:
+
+```typescript
+avatarUrl: "/your-image.jpg",
+```
+
+## Sitemap and SEO
+
+This project uses **next-sitemap** to generate sitemap and robots.txt automatically after build.
 
 ### Configuration
 
-Create a `next-sitemap.config.js` file at the root of the project:
+Update `next-sitemap.config.js` with your domain:
 
 ```js
-/** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://ruixen.com",
+  siteUrl: "https://yourdomain.com",
   generateRobotsTxt: true,
-  changefreq: "monthly",
-  priority: 0.8,
-  sitemapSize: 5000,
-  exclude: ["/private", "/admin"],
-  robotsTxtOptions: {
-    policies: [
-      {
-        userAgent: "*",
-        allow: "/",
-      },
-    ],
-  },
 };
 ```
 
-### Script Setup
-
-Add the following to your `package.json` scripts:
-
-```json
-"scripts": {
-  "postbuild": "next-sitemap"
-}
-```
-
-This automatically generates the sitemap after each production build.
-
-To generate manually:
-
-```bash
-npx next-sitemap
-```
-
-After generation, the following files will be created in the `/public` directory:
-
-- `/sitemap.xml`
-- `/robots.txt`
-
-These are used by search engines for crawling and indexing your site.
-
 ## Deployment
 
-You can deploy this project on any platform that supports **Node.js**, such as:
+### Vercel (Recommended)
 
-- **Vercel** (recommended for Next.js)
-- **Netlify**
-- **AWS Amplify**
-- Your own server
+1. Click the **Deploy** button above, or
+2. Push to GitHub and import in [Vercel Dashboard](https://vercel.com/new)
 
-### For Vercel:
+### Other Platforms
 
-1. Push your code to **GitHub**.
-2. Import the repository into **Vercel**.
-3. Set the build command to `npm run build`.
-4. Set the output directory to `.next`.
+- **Netlify**: Connect your repo and set build command to `pnpm build`
+- **AWS Amplify**: Import from GitHub with Next.js preset
+- **Self-hosted**: Run `pnpm build && pnpm start`
 
+## Tech Stack
+
+- [Next.js 14](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Framer Motion](https://www.framer.com/motion/) - Animations
+- [Radix UI](https://www.radix-ui.com/) - UI primitives
+- [Lucide Icons](https://lucide.dev/) - Icons
 
 ## Contact & Support
 
-If you need help, have feedback, or want to suggest improvements, feel free to reach out:
-
+- **Website**: [ruixen.com](https://ruixen.com)
 - **Email**: [support@ruixen.com](mailto:support@ruixen.com)
 - **Feedback**: [feedback@ruixen.com](mailto:feedback@ruixen.com)
 
-Maintained by the **Ruixen Team**.
+## License
+
+MIT License - feel free to use this template for your portfolio!
 
 ---
 
-Let me know if you need a **license section** or **contributor guidelines** added.
+Made with love by **Ruixen UI**
